@@ -1,0 +1,442 @@
+{
+  "name": "cpptools",
+  "displayName": "C/C++",
+  "description": "Complete C/C++ language support including code-editing and debugging.",
+  "version": "0.8.1",
+  "publisher": "ms-vscode",
+  "preview": true,
+  "icon": "icon.svg",
+  "readme": "README.md",
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "engines": {
+    "vscode": "^1.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/vscppsamples/issues"
+  },
+  "keywords": [
+    "C",
+    "C++"
+  ],
+  "categories": [
+    "Languages",
+    "Debuggers"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/main",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "C/C++ Configuration",
+      "properties": {
+        "C_Cpp.clang_format_path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "full path to clang-format tool"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "C_Cpp.ConfigurationSelect",
+        "title": "C/Cpp: Select a Configuration"
+      },
+      {
+        "command": "C_Cpp.ConfigurationEdit",
+        "title": "C/Cpp: Edit Configurations"
+      },
+      {
+        "command": "C_Cpp.UnloadLanguageServer",
+        "title": "C/Cpp: UnloadLanguageServer"
+      },
+      {
+        "command": "C_Cpp.SwitchHeaderSource",
+        "title": "C/Cpp: Switch Header/Source"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "C_Cpp.SwitchHeaderSource",
+        "key": "f4",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "C_Cpp.SwitchHeaderSource",
+        "key": "Alt+O",
+        "when": "editorTextFocus"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "cppdbg",
+        "label": "C++ (GDB/LLDB)",
+        "enableBreakpointsFor": {
+          "languageIds": [
+            "cpp",
+            "c",
+            ".h",
+            ".cc",
+            ".cxx",
+            ".hpp",
+            ".hh",
+            ".hxx"
+          ]
+        },
+        "program": "./debugAdapters/OpenDebugAD7",
+        "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+        "variables": {
+          "pickProcess": "extension.pickNativeProcess"
+        },
+        "initialConfigurations": [
+          {
+            "name": "C++ Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "enter program name, for example ${workspaceRoot}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+              "MIMode": "gdb"
+            },
+            "osx": {
+              "MIMode": "lldb"
+            },
+            "windows": {
+              "MIMode": "gdb"
+            }
+          },
+          {
+            "name": "C++ Attach",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "enter program name, for example ${workspaceRoot}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "processId": "${command.pickProcess}",
+            "externalConsole": false,
+            "linux": {
+              "MIMode": "gdb"
+            },
+            "osx": {
+              "MIMode": "lldb"
+            },
+            "windows": {
+              "MIMode": "gdb"
+            }
+          }
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program",
+              "name",
+              "type",
+              "request"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Workspace relative path to the program to launch.",
+                "default": "program.exe"
+              },
+              "args": {
+                "type": "array",
+                "description": "Command line arguments passed to the program.",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the engine. Must be \"cppdbg\"",
+                "default": "cppdbg"
+              },
+              "request": {
+                "type": "string",
+                "description": "The type debug session. Must be \"launch\"",
+                "default": "launch"
+              },
+              "targetArchitecture": {
+                "type": "string",
+                "description": "The architecture of the debuggee. Allowed values are x86, arm, arm64, mips, x64, amd64, x86_64",
+                "default": "x64"
+              },
+              "cwd": {
+                "type": "string",
+                "description": "The working directory of the target",
+                "default": "."
+              },
+              "setupCommands": {
+                "type": "array",
+                "description": "One or more GDB/LLDB/CLRDBG commands to execute in order to setup the underlying debugger. Example: \"customLaunchSetupCommands\": [ { \"text\": \"target-run\", \"description\": \"run target\", \"ignoreFailures\": false }]",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The debugger command to execute.",
+                      "default": ""
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Optional description for the command",
+                      "default": ""
+                    },
+                    "ignoreFailures": {
+                      "type": "boolean",
+                      "description": "If true, failures from the command should be ignored. Default value is false",
+                      "default": "false"
+                    }
+                  }
+                },
+                "default": []
+              },
+              "customLaunchSetupCommands": {
+                "type": "array",
+                "description": "If provided, this replaces the default commands used to launch a target with some other commands. For example, this can be \"-target-attach\" in order to attach to a target process. An empty command list replaces the launch commands with nothing, which can be useful if the debugger is being provided launch options as command line options. Example: \"customLaunchSetupCommands\": [ { \"text\": \"target-run\", \"description\": \"run target\", \"ignoreFailures\": false }]",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The debugger command to execute.",
+                      "default": ""
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Optional description for the command",
+                      "default": ""
+                    },
+                    "ignoreFailures": {
+                      "type": "boolean",
+                      "description": "If true, failures from the command should be ignored. Default value is false",
+                      "default": ""
+                    }
+                  }
+                },
+                "default": []
+              },
+              "launchCompleteCommand": {
+                "enum": [
+                  "exec-run",
+                  "exec-continue",
+                  "None"
+                ],
+                "description": "The command to execute after the debugger is fully setup in order to cause the target process to run. Allowed values are \"exec-run\", \"exec-continue\", \"None\". The default value is \"exec-run\".",
+                "default": "exec-run"
+              },
+              "visualizerFile": {
+                "type": "string",
+                "description": ".natvis file to be used when debugging this process",
+                "default": ""
+              },
+              "environment": {
+                "type": "array",
+                "description": "Environment variables to add to the environment for the program. Example: { \"name\": \"squid\", \"value\": \"clam\" }",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": "string",
+                    "value": "string"
+                  }
+                },
+                "default": []
+              },
+              "additionalSOLibSearchPath": {
+                "type": "string",
+                "description": "Semicolon separated list of directories to use to search for .so files. Example: \"c:\\dir1;c:\\dir2\"",
+                "default": ""
+              },
+              "MIMode": {
+                "type": "string",
+                "description": "Indicates the console debugger that the MIDebugEngine will connect to. Allowed values are \"gdb\" \"lldb\" \"clrdbg\"",
+                "default": "gdb"
+              },
+              "miDebuggerPath": {
+                "type": "string",
+                "description": "The path the mi debugger (such as gdb).",
+                "default": "/usr/bin/gdb"
+              },
+              "miDebuggerServerAddress": {
+                "type": "string",
+                "description": "Network address of the MI Debugger Server to connect to (example: localhost:1234).",
+                "default": "serveraddress:port"
+              },
+              "processId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "Optional process id to attach the debugger to. Use \"${command.pickProcesss}\" to get a list of local running processes to attach to. Note that some platforms require administrator privileges in order to attach to a process.",
+                    "default": "${command.pickProcess}"
+                  },
+                  {
+                    "type": "integer",
+                    "description": "Optional process id to attach the debugger to. Use \"${command.pickProcesss}\" to get a list of local running processes to attach to. Note that some platforms require administrator privileges in order to attach to a process.",
+                    "default": 0
+                  }
+                ]
+              },
+              "stopAtEntry": {
+                "type": "boolean",
+                "description": "Optional parameter. If true, the debugger should stop at the entrypoint of the target. If processId is passed, has no effect.",
+                "default": false
+              },
+              "debugServerPath": {
+                "type": "string",
+                "description": "Optional full path to debug server to launch. Defaults to null",
+                "default": ""
+              },
+              "debugServerArgs": {
+                "type": "string",
+                "description": "Optional debug server args. Defaults to null",
+                "default": ""
+              },
+              "serverStarted": {
+                "type": "string",
+                "description": "Optional server-started pattern to look for in the debug server output. Defaults to null",
+                "default": ""
+              },
+              "filterStdout": {
+                "type": "boolean",
+                "description": "Search stdout stream for server-started pattern and log stdout to debug output. Defaults to true",
+                "default": "true"
+              },
+              "filterStderr": {
+                "type": "boolean",
+                "description": "Search stderr stream for server-started pattern and log stderr to debug output. Defaults to false",
+                "default": "false"
+              },
+              "serverLaunchTimeout": {
+                "type": "integer",
+                "description": "Optional time, in milliseconds, for the debugger to wait for the debugServer to start up. Default is 10000",
+                "default": "10000"
+              },
+              "coreDumpPath": {
+                "type": "string",
+                "description": "Optional full path to a core dump file for the specified program. Defaults to null.",
+                "default": ""
+              },
+              "externalConsole": {
+                "type": "boolean",
+                "description": "If true, a console is launched for the debuggee. If false, no console is launched. Note this option is ignored in some cases for technical reasons.",
+                "default": "false"
+              }
+            }
+          }
+        },
+        "windows": {
+          "program": "./debugAdapters/bin/OpenDebugAD7.exe"
+        }
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "c_cpp_properties.json",
+        "url": "./c_cpp_properties.schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile && npm test && node ./out/src/Debugger/copyScript.js",
+    "pretest": "node ./node_modules/vscode/bin/compile",
+    "test": "mocha -u tdd ./out/test",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "typescript": "1.8.7",
+    "vscode": "^0.11.0",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^2.0.0",
+    "vscode-extension-telemetry": "^0.0.5",
+    "http-proxy-agent": "^1.0.0",
+    "https-proxy-agent": "^1.0.0",
+    "tmp": "^0.0.28",
+    "yauzl": "^2.5.0",
+    "mkdirp": "^0.5.1",
+    "vscode-debugprotocol": "^1.9.0",
+    "vscode-debugadapter": "^1.9.0"
+  },
+  "runtimeDependencies": [
+    {
+      "description": "Mono Framework Assemblies",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=816539",
+      "platforms": [
+        "linux",
+        "darwin"
+      ]
+    },
+    {
+      "description": "Mono Runtime (Linux / x86)",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=816540",
+      "platforms": [
+        "linux"
+      ],
+      "architectures": [
+        "x86"
+      ],
+      "binaries": [
+        "./debugAdapters/mono.linux-x86"
+      ]
+    },
+    {
+      "description": "Mono Runtime (Linux / x86_64)",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=816541",
+      "platforms": [
+        "linux"
+      ],
+      "architectures": [
+        "x86_64"
+      ],
+      "binaries": [
+        "./debugAdapters/mono.linux-x86_64"
+      ]
+    },
+    {
+      "description": "Mono Runtime (OS X)",
+      "url": "https://go.microsoft.com/fwlink/?LinkId=816542",
+      "platforms": [
+        "darwin"
+      ],
+      "binaries": [
+        "./debugAdapters/mono.osx"
+      ]
+    },
+    {
+      "description": "LLDB 3.8.0 (OS X)",
+      "url": "https://go.microsoft.com/fwlink/?LinkID=817244",
+      "platforms": [
+        "darwin"
+      ],
+      "binaries": [
+        "./debugAdapters/lldb/bin/debugserver",
+        "./debugAdapters/lldb/bin/lldb-mi",
+        "./debugAdapters/lldb/bin/lldb-argdumper",
+        "./debugAdapters/lldb/bin/lldb-launcher"
+      ]
+    }
+  ],
+  "__metadata": {
+    "id": "690b692e-e8a9-493f-b802-8089d50ac1b2",
+    "publisherId": "5f5636e7-69ed-4afe-b5d6-8d231fb3d3ee",
+    "publisherDisplayName": "Microsoft"
+  }
+}
